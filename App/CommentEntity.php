@@ -5,24 +5,24 @@ use JsonApi\Entity,
 
 ;
 
-class AuthorEntity implements Entity
+class CommentEntity implements Entity
 {
 
-	private $author;
+	private $comment;
 
-	public function __construct( $author )
+	public function __construct( $comment )
 	{
-		$this->author = $author;
+		$this->comment = $comment;
 	}
 	
 	public function getId()
 	{
-		return $this->author->id; 
+		return $this->comment->id; 
 	}
 
 	public function getType()
 	{
-		return 'authors';
+		return 'comments';
 	}
 
 	public function getIdentity()
@@ -36,12 +36,12 @@ class AuthorEntity implements Entity
 	public function getAttributes()
 	{
 		$attributes = new Attributes();
-		$attributes->set( "name", $this->author->name )->set( "email", $this->author->email );
+		$attributes->set( "name", $this->comment->name )->set( "email", $this->comment->email );
 		return $attributes->get();
 	}
 
 	public function toRaw()
 	{
-		return $this->author;
+		return $this->comment;
 	}
 }

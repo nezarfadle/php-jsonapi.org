@@ -1,12 +1,6 @@
 <?php namespace App;
 
-use JsonApi\SingleResource,
-	JsonApi\ResourceIdentifier,
-	JsonApi\Attributes,
-	JsonApi\Links,
-	JsonApi\Transformer
-
-
+use JsonApi\Transformer
 ;
 
 class AuthorTransformer extends Transformer
