@@ -3,4 +3,5 @@
 phpunit.xml export-ignore
 LICENSE export-ignore
 README.md export-ignore
-tests/ export-ignore export-ignore
+tests/ export-ignore
+app/ export-ignore

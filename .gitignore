@@ -1,4 +1,3 @@
 /vendor/*
 /backup/*
-/app/*
 composer.lock
