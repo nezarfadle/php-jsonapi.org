@@ -66,7 +66,7 @@ abstract class BaseResource
 						'self' => 'http://example.com/' . $data['type'] . '/1/relationships/' . $relationshipName,
 						'related' => 'http://example.com/' . $data['type'] . '/1/' . $relationshipName
 					],
-					'data' => $provider->getData()
+					'data' => $provider->getRelationship()
 				];
 			}
 			

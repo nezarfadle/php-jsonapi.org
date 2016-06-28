@@ -31,9 +31,9 @@ $articleResource = new Resource([
 		"attributes", "links", "meta", "jsonapi",
 		'relationships' => [
 			'author' => new AuthorProvider( $article->author ),
-			// 'comments' => new CommentProvider( $article->comments ),
+			'comments' => new CommentProvider( $article->comments ),
 		],
-		'included' => [ 'author' ]
+		'included' => [ 'author', 'comments']
 	]
 	
 ]);

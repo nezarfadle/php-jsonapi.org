@@ -5,7 +5,7 @@ use JsonApi\Entity,
 
 ;
 
-class AuthorEntity implements Entity
+class AuthorEntity extends Entity
 {
 
 	private $author;
@@ -23,14 +23,6 @@ class AuthorEntity implements Entity
 	public function getType()
 	{
 		return 'authors';
-	}
-
-	public function getIdentity()
-	{
-		return [
-			"type" => $this->getType(), 
-			"id" => (string) $this->getId()
-		];
 	}
 
 	public function getAttributes()

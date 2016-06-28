@@ -5,7 +5,7 @@ use JsonApi\Entity,
 
 ;
 
-class CommentEntity implements Entity
+class CommentEntity extends Entity
 {
 
 	private $comment;
@@ -25,18 +25,10 @@ class CommentEntity implements Entity
 		return 'comments';
 	}
 
-	public function getIdentity()
-	{
-		return [
-			"type" => $this->getType(), 
-			"id" => (string) $this->getId()
-		];
-	}
-
 	public function getAttributes()
 	{
 		$attributes = new Attributes();
-		$attributes->set( "name", $this->comment->name )->set( "email", $this->comment->email );
+		$attributes->set( "title", $this->comment->title )->set( "body", $this->comment->body );
 		return $attributes->get();
 	}
 

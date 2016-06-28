@@ -1,10 +1,23 @@
 <?php namespace JsonApi;
 
-interface Entity
+abstract class Entity
 {
-	public function getId();
-	public function getType();
-	public function getIdentity();
-	public function getAttributes();
-	public function toRaw();	
+
+	abstract public function getId();
+	abstract public function getType();
+	abstract public function getAttributes();
+	abstract public function toRaw();	
+	
+	public function getIdentity()
+	{
+		return [
+			"type" => $this->getType(), 
+			"id" => (string) $this->getId()
+		];
+	}
+
+	public function getIdentifier()
+	{
+		return new ResourceIdentifier( $this->getType(), $this->getId() );
+	}
 }

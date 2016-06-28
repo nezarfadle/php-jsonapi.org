@@ -1,16 +1,18 @@
 <?php namespace App;
 
-use JsonApi\SingleResource,
+use JsonApi\BaseProvider,
+	JsonApi\Resource,
 	JsonApi\Links
 
 ;
 
-class CommentProvider
+class CommentProvider extends BaseProvider
 {
 	private $comments;
 
 	public function __construct( $comments )
 	{
+		// parent::__construct( new CommentEntity($comments) );
 		$this->comments = $comments;
 	}
 
@@ -19,8 +21,8 @@ class CommentProvider
 		$data = [];
 		
 		foreach( $this->comments as $comment ) {
-			$t = new CommentTransformer( $comment );
-			$data[] = $t->getRelationship();
+			$t = new CommentEntity( $comment );
+			$data[] = $t->getIdentity();
 		}
 		return $data;
 	}
@@ -30,8 +32,8 @@ class CommentProvider
 		$data = []; 
 
 		foreach( $this->comments as $comment ) {
-			$r = new SingleResource([
-				'main' => new CommentTransformer( $comment ),
+			$r = new Resource([
+				'main' => new CommentEntity( $comment ),
 				'features' => [ "attributes", "links" ]
 			]);
 
