@@ -24,6 +24,10 @@ abstract class BaseResource
 		return $this->hasFuture( 'relationships' );
 	}
 
+	protected function hasIncluded()
+	{
+		return $this->hasFuture( 'included' ) && $this->hasRelationships();
+	}
 	protected function hasLinks()
 	{
 		return $this->hasFuture( 'links' );
@@ -39,7 +43,7 @@ abstract class BaseResource
 		return $this->hasFuture( 'jsonapi' );
 	}
 
-	protected function getSchema()
+	public function getSchema()
 	{
 
 		$data = [];
@@ -56,7 +60,7 @@ abstract class BaseResource
 			$data['relationships'] = [];
 			
 			foreach( $this->conf['features']['relationships'] as $relationshipName => $provider ) {
-				// $data['relationships'][ $relationshipName ] = $provider->getRelationship(); 
+
 				$data['relationships'][ $relationshipName ] = [
 					'links' => [
 						'self' => 'http://example.com/' . $data['type'] . '/1/relationships/' . $relationshipName,
@@ -68,8 +72,21 @@ abstract class BaseResource
 			
 		}
 
+		if ( $this->hasIncluded() ) {
+			
+			$data['included'] = [];
+
+			foreach( $this->conf['features']['included'] as $providerName ) {
+			
+				$buffer = $this->conf['features']['relationships'][ $providerName ]->getIncluded();
+				
+				foreach( $buffer as $resource ) {
+					$data['included'][] = $resource;
+				}
+			}
+		}
+
 		if ( $this->hasLinks() ) {
-			// $data['links'] = $this->conf['main']->getLinks();
 			$data['links'] = [ 'self' => 'http://example.com/' . $data['type'] . '/' . $data['id'] ];
 		}
 

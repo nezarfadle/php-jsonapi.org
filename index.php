@@ -11,7 +11,7 @@ use App\Article,
 	App\CommentTransformer,
 	App\CommentProvider,
 	JsonApi\CompoundResource,
-	JsonApi\SingleResource
+	JsonApi\Resource
 
 ;
 
@@ -25,7 +25,7 @@ $article->has( new Comment( 2, "Second Comment", "Just Second Comment" ));
 
 $baseUrl = "http://example.com/api/v1" ;
 
-$articleResource = new CompoundResource([
+$articleResource = new Resource([
 	'main' => new ArticleTransformer( $article ),
 	"features" => [
 		"attributes", "links", "meta", "jsonapi",

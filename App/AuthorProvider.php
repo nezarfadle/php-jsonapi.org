@@ -1,20 +1,18 @@
 <?php namespace App;
 
-use JsonApi\SingleResource,
+use JsonApi\BaseProvider,
+	JsonApi\Resource,
 	JsonApi\Attributes,
 	JsonApi\Links
 
 ;
 
-class AuthorProvider
+class AuthorProvider extends BaseProvider
 {
-
-	private $transformer, $author;
 
 	public function __construct( $author )
 	{
-		$this->transformer = new AuthorTransformer( $author );
-		$this->author = $author;
+		parent::__construct( $author, new AuthorTransformer( $author ) );
 	}
 	
 	public function getData()
@@ -25,8 +23,8 @@ class AuthorProvider
 	public function getIncluded()
 	{
 		$id = $this->transformer->getIdentifier()->getId();
-		$r = new SingleResource([
-			'main' => new AuthorTransformer( $this->author ),
+		$r = new Resource([
+			'main' => new AuthorTransformer( $this->entity ),
 			"features" => [
 				"attributes", 'links'
 			]
