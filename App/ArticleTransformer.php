@@ -31,12 +31,12 @@ class ArticleTransformer
 		return "1.0";
 	}
 
-	public function getLinks()
-	{
-		return [
-			"self" => "http://exmaple.com/api/v1"
-		];
-	}
+	// public function getLinks()
+	// {
+	// 	return [
+	// 		"self" => "http://exmaple.com/api/v1"
+	// 	];
+	// }
 	
 	public function getIdentifier()
 	{
