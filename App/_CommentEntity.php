@@ -1,11 +1,11 @@
 <?php  namespace App;
 
-use JsonApi\BaseEntity,
+use JsonApi\Entity,
 	JsonApi\Attributes
 
 ;
 
-class CommentEntity extends BaseEntity
+class CommentEntity extends Entity
 {
 
 	private $comment;
@@ -25,11 +25,6 @@ class CommentEntity extends BaseEntity
 		return 'comments';
 	}
 
-	public function toRaw()
-	{
-		return $this->comment;
-	}
-
 	public function getAttributes()
 	{
 		$attributes = new Attributes();
@@ -37,11 +32,8 @@ class CommentEntity extends BaseEntity
 		return $attributes->get();
 	}
 
-	public function getLinks()
+	public function toRaw()
 	{
-		return [
-			'self' => 'http://example.com/comments/' . $this->getId()
-		];
+		return $this->comment;
 	}
-	
 }

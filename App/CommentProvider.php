@@ -12,7 +12,6 @@ class CommentProvider extends BaseProvider
 
 	public function __construct( $comments )
 	{
-		// parent::__construct( new CommentEntity($comments) );
 		$this->comments = $comments;
 	}
 
@@ -33,11 +32,12 @@ class CommentProvider extends BaseProvider
 
 		foreach( $this->comments as $comment ) {
 			$r = new Resource([
-				'main' => new CommentEntity( $comment ),
+				'baseurl' => 'http://example.com/api/v1',
+				'entity' => new CommentEntity( $comment ),
 				'features' => [ "attributes", "links" ]
 			]);
 
-			$data[] = $r->getSchema();
+			$data[] = $r->getData();
 		}
 
 		return $data;

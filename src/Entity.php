@@ -15,15 +15,6 @@ abstract class Entity
 			"id" => (string) $this->getId()
 		];
 	}
-
-
-
-	public function getIdentifier()
-	{
-		return new ResourceIdentifier( $this->getType(), $this->getId() );
-	}
-	
 	public function getMeta(){}
-	public function getJsonApi(){}
-	
+
 }

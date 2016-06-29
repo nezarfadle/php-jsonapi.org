@@ -29,17 +29,16 @@ class AuthorProvider extends BaseProvider
 
 	public function getIncluded()
 	{
-		// $id = $this->transformer->getIdentifier()->getId();
-		// $id = $this->entity->getIdentifier()->getId();
+		
 		$r = new Resource([
-			// 'main' => new AuthorTransformer( $this->entity ),
-			'main' => new AuthorEntity( $this->author ),
+			'baseurl' => 'http://example.com/api/v1',
+			'entity' => new AuthorEntity( $this->author ),
 			"features" => [
 				"attributes", 'links'
 			]
 		]);
 		return [
-			$r->getSchema()
+			$r->getData()
 		];
 	}
 }

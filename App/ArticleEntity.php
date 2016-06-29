@@ -1,23 +1,21 @@
 <?php  namespace App;
 
-use JsonApi\Entity,
-	JsonApi\Attributes
-
+use JsonApi\BaseEntity,
+	JsonApi\Relationship	
 ;
 
-class ArticleEntity extends Entity
+class ArticleEntity extends BaseEntity
 {
-
 	private $article;
 
 	public function __construct( $article )
 	{
-		$this->article = $article;
+		$this->article  = $article;
 	}
 	
 	public function getId()
 	{
-		return $this->article->id; 
+		return $this->article->id;
 	}
 
 	public function getType()
@@ -25,33 +23,30 @@ class ArticleEntity extends Entity
 		return 'articles';
 	}
 
-	public function getAttributes()
-	{
-		$attributes = new Attributes();
-		$attributes->set( "title", $this->article->title )->set( "body", $this->article->body );
-		return $attributes->get();
-	}
-
 	public function toRaw()
 	{
 		return $this->article;
 	}
 
-	public function getMeta()
+	public function getAttributes()
 	{
 		return [
-			"copyright" => "Copyright 2015 Example Corp.",
-		    "authors" => [
-		      "Yehuda Katz",
-		      "Steve Klabnik",
-		      "Dan Gebhardt",
-		      "Tyler Kellen"
-		    ]
+			'title' => $this->article->title,
+			'body' => $this->article->body,
 		];
 	}
 
-	public function getJsonApi()
+	public function getLinks()
 	{
-		return "1.0";
+		return [
+			'self' => 'http://exmaple.com/articles/' . $this->article->id
+		];
+	}
+	public function getRelationships()
+	{
+		return [
+			// 'author' => Relationship::fromEntity( $this, new AuthorEntity( $this->article->author )),
+			'comments' => Relationship::fromCollection( $this, new CommentsCollection( $this->article->comments ))
+		];
 	}
 }
