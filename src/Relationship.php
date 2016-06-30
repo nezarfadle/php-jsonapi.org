@@ -3,16 +3,6 @@
 class Relationship
 {
 
-	public function __construct( $name, $links, $data )
-	{
-		return [
-			$name = [
-				'links' => $links,
-				'data' => $data
-			]
-		];
-	}
-
 	public static function fromEntity( $parent, $entity )
 	{
 		return [
@@ -24,8 +14,9 @@ class Relationship
 		];
 	}
 
-	public static function fromCollection( $parent, $collection )
+	public static function fromCollection( $parent, $childs, $collectionClassName )
 	{
+		$collection = new $collectionClassName( $childs );
 		return [
 			'links' => [
 				'self' => 'http://exmaople.com/' . $parent->getType() . '/' . $parent->getId() . '/relationships' . $collection->getType (),

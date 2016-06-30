@@ -46,6 +46,7 @@ $articleResource = new ArticleEntity( $article );
 
 $data = [
 	"data" => $articleResource->toResource(),
+	"included" => $articleResource->getGraph(),
 ];
 echo '<pre>', json_encode( $data, JSON_PRETTY_PRINT);
 // echo '<pre>', json_encode( [ 'data' => $articleResource->getSchema() ], JSON_PRETTY_PRINT);

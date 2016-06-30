@@ -1,7 +1,8 @@
 <?php  namespace App;
 
 use JsonApi\BaseEntity,
-	JsonApi\Relationship	
+	JsonApi\Relationship,	
+	JsonApi\Bag
 ;
 
 class ArticleEntity extends BaseEntity
@@ -46,7 +47,16 @@ class ArticleEntity extends BaseEntity
 	{
 		return [
 			// 'author' => Relationship::fromEntity( $this, new AuthorEntity( $this->article->author )),
-			'comments' => Relationship::fromCollection( $this, new CommentsCollection( $this->article->comments ))
+			'comments' => Relationship::fromCollection( $this, $this->article->comments, 'App\CommentsCollection' )
 		];
+	}
+
+	public function getIncluded()
+	{
+		
+		
+		Bag::fromEntity( $this );
+		Bag::fromCollection( $this->article->comments, 'App\CommentsCollection' );
+		return Bag::getAll();
 	}
 }
