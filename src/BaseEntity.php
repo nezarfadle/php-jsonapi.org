@@ -9,7 +9,7 @@ abstract class BaseEntity
 	abstract public function getAttributes();
 	abstract public function getLinks();
 	
-	public function getRelationships(){}
+	// public function getRelationships(){}
 	public function getMeta(){}
 
 	public function toIdentifier()
@@ -25,9 +25,8 @@ abstract class BaseEntity
 		$data = [
 			"type" => $this->getType(), 
 			"id" => (string) $this->getId(),
-			'attributes' => [
+			'attributes' => 
 				$this->getAttributes()
-			]
 		];
 
 		$relationships = $this->getRelationships();
@@ -45,7 +44,36 @@ abstract class BaseEntity
 		return $data;
 	}
 
-	
+	public function setRelation()
+	{
+		return [];	
+	}
+
+	public function getRelationships()
+	{
+
+		$relations = $this->setRelation();
+		$data = [];
+		foreach($relations as $key => $relation) 
+		{
+			$data[ $key ] = Relationship::resolve( $this, $relation->getParticipant(), $relation->getResolver() );
+		}
+		
+		return $data;
+	}
+
+	public function getIncluded()
+	{
+
+		$relations = $this->setRelation();
+
+		foreach($relations as $relation) 
+		{
+			Bag::resolve( $relation->getParticipant(), $relation->getResolver() );
+		}
+		
+		return Bag::getAll();
+	}
 
 	
 }

@@ -2,6 +2,7 @@
 
 use JsonApi\BaseEntity,
 	JsonApi\Relationship,	
+	JsonApi\RelationshipEx,	
 	JsonApi\Bag
 ;
 
@@ -43,20 +44,13 @@ class ArticleEntity extends BaseEntity
 			'self' => 'http://exmaple.com/articles/' . $this->article->id
 		];
 	}
-	public function getRelationships()
+
+	public function setRelation()
 	{
 		return [
-			// 'author' => Relationship::fromEntity( $this, new AuthorEntity( $this->article->author )),
-			'comments' => Relationship::fromCollection( $this, $this->article->comments, 'App\CommentsCollection' )
+			'author' => new RelationshipEx( $this->article->author, 'App\AuthorEntity' ),
+			'comments' => new RelationshipEx( $this->article->comments, 'App\CommentsCollection' ),
 		];
 	}
-
-	public function getIncluded()
-	{
-		
-		
-		Bag::fromEntity( $this );
-		Bag::fromCollection( $this->article->comments, 'App\CommentsCollection' );
-		return Bag::getAll();
-	}
+	
 }

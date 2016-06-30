@@ -1,11 +1,11 @@
 <?php  namespace App;
 
-use JsonApi\Entity,
+use JsonApi\BaseEntity,
 	JsonApi\Attributes
 
 ;
 
-class AuthorEntity extends Entity
+class AuthorEntity extends BaseEntity
 {
 
 	private $author;
@@ -35,5 +35,12 @@ class AuthorEntity extends Entity
 	public function toRaw()
 	{
 		return $this->author;
+	}
+
+	public function getLinks()
+	{
+		return [
+			'self' => 'http://example.com/author/' . $this->getId()
+		];
 	}
 }

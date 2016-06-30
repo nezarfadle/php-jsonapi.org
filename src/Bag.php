@@ -18,6 +18,14 @@ class Bag
 		
 	}
 
+	public static function resolve( $entity, $resolver )
+	{
+		
+		$re = new $resolver( $entity );
+		self::add( $re->toResource() );
+		
+	}
+
 	public static function addItem( $item )
 	{
 		self::$bag[] = $item;
@@ -26,6 +34,17 @@ class Bag
 	public static function addItems( $items )
 	{
 		self::$bag = array_merge( self::$bag, $items );
+	}
+
+	public static function add( $items )
+	{
+
+		if( !array_key_exists( 'type', $items ) )  {
+			self::addItems( $items );
+		} else {
+			self::addItem( $items );
+		}
+		
 	}
 
 	public static function getItem( $index )

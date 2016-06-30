@@ -13,7 +13,7 @@ abstract class Collection
 	abstract public function getType();
 
 
-	public function getIdentifiers()
+	public function toIdentifier()
 	{
 		$data = [];
 
@@ -24,7 +24,7 @@ abstract class Collection
 		return $data;
 	}
 
-	public function getResources()
+	public function toResource()
 	{
 		$data = [];
 
