@@ -1,41 +1,23 @@
-<?php  namespace JsonApi;
+<?php namespace JsonApi;
 
 class Relationship
 {
+	private $participant, $resolver;
 
-	// public static function fromEntity( $parent, $entity )
-	// {
-	// 	return [
-	// 		'links' => [
-	// 			'self' => 'http://exmaople.com/' . $parent->getType() . '/' . $parent->getId() . '/relationships' . $entity->getType (),
-	// 			'related' => 'http://exmaople.com/' . $parent->getType() . '/' . $parent->getId() . '/' . $entity->getType (),
-	// 		],
-	// 		'data' => $entity->toIdentifier()
-	// 	];
-	// }
-
-	// public static function fromCollection( $parent, $childs, $collectionClassName )
-	// {
-	// 	$collection = new $collectionClassName( $childs );
-	// 	return [
-	// 		'links' => [
-	// 			'self' => 'http://exmaople.com/' . $parent->getType() . '/' . $parent->getId() . '/relationships' . $collection->getType (),
-	// 			'related' => 'http://exmaople.com/' . $parent->getType() . '/' . $parent->getId() . '/' . $collection->getType (),
-	// 		],
-	// 		'data' => $collection->getIdentifiers()
-	// 	];
-	// }
-
-	public static function resolve( $parent, $childs, $collectionClassName )
+	public function __construct( $participant, $resolver )
 	{
-		$collection = new $collectionClassName( $childs );
-		return [
-			'links' => [
-				'self' => 'http://exmaople.com/' . $parent->getType() . '/' . $parent->getId() . '/relationships' . $collection->getType (),
-				'related' => 'http://exmaople.com/' . $parent->getType() . '/' . $parent->getId() . '/' . $collection->getType (),
-			],
-			'data' => $collection->toIdentifier()
-		];
+		$this->participant = $participant;
+		$this->resolver = $resolver;
+	}
+
+	public function getParticipant()
+	{
+		return $this->participant;
+	}
+
+	public function getResolver()
+	{
+		return $this->resolver;
 	}
 	
 }

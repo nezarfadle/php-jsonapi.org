@@ -5,14 +5,7 @@ include 'vendor/autoload.php';
 use App\Article,
 	App\Author,
 	App\Comment,
-	App\ArticleTransformer,
-	App\ArticleEntity,
-	App\AuthorTransformer,
-	App\AuthorProvider,
-	App\CommentTransformer,
-	App\CommentProvider,
-	JsonApi\CompoundResource,
-	JsonApi\Resource
+	App\ArticleEntity
 
 ;
 
@@ -42,11 +35,30 @@ $article->has( new Comment( 2, "Second Comment", "Just Second Comment" ));
 // 	"included" => $articleResource->getIncluded(),
 // ];
 
-$articleResource = new ArticleEntity( $article );
+// $articleResource = new ArticleEntity( $article );
+
+// $data = [
+// 	"data" => $articleResource->toResource(),
+// 	"included" => $articleResource->getIncluded(),
+// ];
+
+
+/**
+ * /articles
+ */
+$buffer = [];
+$include = [];
+
+$articles = App\Tasks\GetAllArticlesTask::get();
+foreach ($articles as $article) {
+	$articleResource = new ArticleEntity( $article );
+	$buffer[] = $articleResource->toResource();
+	$include  =  $articleResource->getIncluded();
+}
 
 $data = [
-	"data" => $articleResource->toResource(),
-	"included" => $articleResource->getIncluded(),
+	"data" => $buffer,
+	"included" => $include,
 ];
 echo '<pre>', json_encode( $data, JSON_PRETTY_PRINT);
 // echo '<pre>', json_encode( [ 'data' => $articleResource->getSchema() ], JSON_PRETTY_PRINT);

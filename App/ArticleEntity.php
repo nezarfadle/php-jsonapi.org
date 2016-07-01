@@ -1,8 +1,7 @@
 <?php  namespace App;
 
 use JsonApi\BaseEntity,
-	JsonApi\Relationship,	
-	JsonApi\RelationshipEx,	
+	JsonApi\Relationship,
 	JsonApi\Bag
 ;
 
@@ -45,11 +44,11 @@ class ArticleEntity extends BaseEntity
 		];
 	}
 
-	public function setRelation()
+	public function getRelation()
 	{
 		return [
-			'author' => new RelationshipEx( $this->article->author, 'App\AuthorEntity' ),
-			'comments' => new RelationshipEx( $this->article->comments, 'App\CommentsCollection' ),
+			'authors' => new Relationship( $this->article->author, 'App\AuthorEntity' ),
+			'comments' => new Relationship( $this->article->comments, 'App\CommentsCollection' ),
 		];
 	}
 	

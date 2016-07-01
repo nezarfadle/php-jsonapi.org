@@ -44,7 +44,7 @@ abstract class BaseEntity
 		return $data;
 	}
 
-	public function setRelation()
+	public function getRelation()
 	{
 		return [];	
 	}
@@ -52,11 +52,11 @@ abstract class BaseEntity
 	public function getRelationships()
 	{
 
-		$relations = $this->setRelation();
+		$relations = $this->getRelation();
 		$data = [];
 		foreach($relations as $key => $relation) 
 		{
-			$data[ $key ] = Relationship::resolve( $this, $relation->getParticipant(), $relation->getResolver() );
+			$data[ $key ] = RelationshipResolver::resolve( $this, $relation->getParticipant(), $relation->getResolver() );
 		}
 		
 		return $data;
@@ -65,7 +65,7 @@ abstract class BaseEntity
 	public function getIncluded()
 	{
 
-		$relations = $this->setRelation();
+		$relations = $this->getRelation();
 
 		foreach($relations as $relation) 
 		{

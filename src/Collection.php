@@ -2,16 +2,19 @@
 
 abstract class Collection
 {
-	private $entites, $resolver;
+	private $type, $entites, $resolver;
 
-	public function __construct( $entites, $resolverClassName )
+	public function __construct( $type, $entites, $resolverClassName )
 	{
+		$this->type = $type;
 		$this->entites = $entites;
 		$this->resolver = $resolverClassName;
 	}
 	
-	abstract public function getType();
-
+	public function getType()
+	{
+		return $this->type;
+	}
 
 	public function toIdentifier()
 	{
