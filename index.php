@@ -50,10 +50,15 @@ $buffer = [];
 $include = [];
 
 $articles = App\Tasks\GetAllArticlesTask::get();
+// echo '<pre>', json_encode($articles, JSON_PRETTY_PRINT);
+
 foreach ($articles as $article) {
 	$articleResource = new ArticleEntity( $article );
 	$buffer[] = $articleResource->toResource();
-	$include  =  $articleResource->getIncluded();
+	$include  =  array_merge( $include, $articleResource->getIncluded());
+	// echo '<pre>', json_encode( $articleResource->getIncluded(), JSON_PRETTY_PRINT), "<hr>";
+
+	// echo '<pre>', json_encode($articleResource->toResource(), JSON_PRETTY_PRINT), json_encode( $articleResource->getIncluded(), JSON_PRETTY_PRINT), "<hr>";
 }
 
 $data = [

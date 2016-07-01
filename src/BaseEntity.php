@@ -66,13 +66,14 @@ abstract class BaseEntity
 	{
 
 		$relations = $this->getRelation();
+		$bag = new Bag();
 
 		foreach($relations as $relation) 
 		{
-			Bag::resolve( $relation->getParticipant(), $relation->getResolver() );
+			$bag->resolve( $relation->getParticipant(), $relation->getResolver() );
 		}
 		
-		return Bag::getAll();
+		return $bag->getAll();
 	}
 
 	

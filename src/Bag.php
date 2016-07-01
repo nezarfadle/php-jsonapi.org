@@ -3,14 +3,14 @@
 class Bag
 {
 
-	private static $bag = [];
+	private $bag = [];
 
-	public static function fromEntity( $entity )
+	public function fromEntity( $entity )
 	{
-		self::$bag[] = $entity->toResource();
+		$this->bag[] = $entity->toResource();
 	}
 
-	public static function fromCollection( $entities, $collectionClassname )
+	public function fromCollection( $entities, $collectionClassname )
 	{
 		
 		$collection = new $collectionClassname( $entities );
@@ -18,7 +18,7 @@ class Bag
 		
 	}
 
-	public static function resolve( $entity, $resolver )
+	public function resolve( $entity, $resolver )
 	{
 		
 		$re = new $resolver( $entity );
@@ -26,17 +26,17 @@ class Bag
 		
 	}
 
-	public static function addItem( $item )
+	public function addItem( $item )
 	{
-		self::$bag[] = $item;
+		$this->bag[] = $item;
 	}
 
-	public static function addItems( $items )
+	public function addItems( $items )
 	{
-		self::$bag = array_merge( self::$bag, $items );
+		$this->bag = array_merge( $this->bag, $items );
 	}
 
-	public static function add( $items )
+	public function add( $items )
 	{
 
 		if( !array_key_exists( 'type', $items ) )  {
@@ -47,14 +47,14 @@ class Bag
 		
 	}
 
-	public static function getItem( $index )
+	public function getItem( $index )
 	{
-		return self::$bag[ $index ];
+		return $this->bag[ $index ];
 	}
 
-	public static function getAll()
+	public function getAll()
 	{
-		return self::$bag;
+		return $this->bag;
 	}
 
 
