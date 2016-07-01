@@ -5,44 +5,44 @@ class Bag
 
 	private $bag = [];
 
-	public function fromEntity( $entity )
-	{
-		$this->bag[] = $entity->toResource();
-	}
-
-	public function fromCollection( $entities, $collectionClassname )
-	{
-		
-		$collection = new $collectionClassname( $entities );
-		self::addItems( $collection->getResources() );
-		
-	}
-
 	public function resolve( $entity, $resolver )
 	{
 		
 		$re = new $resolver( $entity );
-		self::add( $re->toResource() );
+		$resource = $re->toResource();
+		$this->add( $resource );
+		// if( !array_key_exists( $this->hash( $resource ) , $this->bag )) {
+		// }
 		
 	}
 
-	public function addItem( $item )
+	private function hash( $obj )
 	{
-		$this->bag[] = $item;
+		// return spl_object_hash( (object)$obj );
+		return $obj['id'].$obj['type'];
+		// print_r($obj);
 	}
 
-	public function addItems( $items )
+	private function addItem( $item )
 	{
-		$this->bag = array_merge( $this->bag, $items );
+		$this->bag[ $this->hash($item) ] = $item;
+	}
+
+	private function addItems( $items )
+	{
+		foreach($items as $item) {
+			$this->addItem( $item );
+		}
+		// $this->bag = array_merge( $this->bag, $items );
 	}
 
 	public function add( $items )
 	{
 
 		if( !array_key_exists( 'type', $items ) )  {
-			self::addItems( $items );
+			$this->addItems( $items );
 		} else {
-			self::addItem( $items );
+			$this->addItem( $items );
 		}
 		
 	}
@@ -54,7 +54,7 @@ class Bag
 
 	public function getAll()
 	{
-		return $this->bag;
+		return array_values($this->bag);
 	}
 
 

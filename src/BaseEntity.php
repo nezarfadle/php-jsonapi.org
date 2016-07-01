@@ -72,7 +72,7 @@ abstract class BaseEntity
 		{
 			$bag->resolve( $relation->getParticipant(), $relation->getResolver() );
 		}
-		
+			
 		return $bag->getAll();
 	}
 
