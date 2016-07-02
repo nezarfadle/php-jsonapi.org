@@ -10,7 +10,8 @@ use App\Article,
 
 ;
 
-$op = $_GET['op'];
+$op = isset($_GET['op']) ? $_GET['op'] : '';
+$include = isset($_GET['include']) ? $_GET['include'] : '';
 
 switch ($op) {
 	case 'article':
@@ -18,7 +19,7 @@ switch ($op) {
 
 		$data  = [
 			'data' => $article->toResource(),
-			'included' => $article->getIncluded()
+			'included' => $article->getIncluded($include)
 		];
 		echo '<pre>', json_encode( $data, JSON_PRETTY_PRINT);
 		break;
@@ -55,5 +56,5 @@ class Foo
 $f1 = new Foo(1);
 $f2 = new Foo(2);
 
-echo spl_object_hash( $f1 ), '<br>';
-echo spl_object_hash( $f2 ), '<br>';
+// echo spl_object_hash( $f1 ), '<br>';
+// echo spl_object_hash( $f2 ), '<br>';

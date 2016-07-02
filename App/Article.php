@@ -4,6 +4,7 @@ class Article
 {
 
 	public $id, $title, $body, $author, $comments = [] ;
+	private $commentsAuthors = [];
 
 	public function __construct( $id, $title, $body )
 	{
@@ -20,5 +21,11 @@ class Article
 	public function has($comment)
 	{
 		$this->comments[] = $comment;
+		$this->commentsAuthors[] = $comment->author;
+	}
+
+	public function getCommentsAuthors()
+	{
+		return $this->commentsAuthors;
 	}
 }

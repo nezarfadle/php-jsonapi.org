@@ -49,6 +49,7 @@ class ArticleEntity extends BaseEntity
 		return [
 			'authors' => new Relationship( $this->article->author, 'App\AuthorEntity' ),
 			'comments' => new Relationship( $this->article->comments, 'App\CommentsCollection' ),
+			'comments.authors' => new Relationship( $this->article->getCommentsAuthors(), 'App\CommentsAuthorasCollection' ),
 		];
 	}
 	

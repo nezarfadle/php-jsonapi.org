@@ -62,15 +62,22 @@ abstract class BaseEntity
 		return $data;
 	}
 
-	public function getIncluded()
+	public function getIncluded( $whatToInclude = '' )
 	{
+		if( $whatToInclude == '' ) return ;
+
+		$list = explode( ',', $whatToInclude);
+		if( !is_array($list) || count($list) == 0 ) return ;
 
 		$relations = $this->getRelation();
 		$bag = new Bag();
 
-		foreach($relations as $relation) 
+		foreach($relations as $key => $relation) 
 		{
-			$bag->resolve( $relation->getParticipant(), $relation->getResolver() );
+			if(in_array( $key, $list ))
+			{
+				$bag->resolve( $relation->getParticipant(), $relation->getResolver() );
+			}
 		}
 			
 		return $bag->getAll();
