@@ -1,6 +1,9 @@
 <?php namespace JsonApi;
 
-use JsonApi\Utils\Url;
+use JsonApi\Utils\Url,
+	JsonApi\Utils\ArrayUtil,
+	JsonApi\ValueObjects\StringValueObject
+;
 
 
 abstract class BaseTransformer
@@ -41,6 +44,14 @@ abstract class BaseTransformer
 		];
 	}
 
+	public function parseSparseFieldsets( $attrs, $sparseFieldsets = '' )
+	{
+		$sparseFieldsets = new StringValueObject( $sparseFieldsets );
+		if( $sparseFieldsets->isEmpty() ) return $attrs;
+
+		return ArrayUtil::spliceByKeys( ',', $sparseFieldsets, $attrs );
+	}
+
 	public function toResource()
 	{
 		$data = [
@@ -48,6 +59,7 @@ abstract class BaseTransformer
 			"id" => (string) $this->getId(),
 			'attributes' => 
 				$this->getAttributes()
+				// $this->parseSparseFieldsets( $this->getAttributes(), 'title,body' )
 		];
 
 		$relationships = $this->getRelationships();
@@ -99,7 +111,7 @@ abstract class BaseTransformer
 		if( $whatToInclude == '' ) return ;
 
 		$list = explode( ',', $whatToInclude);
-		if( !is_array($list) || count($list) == 0 ) return ;
+		if( ArrayUtil::isEmpty( $list ) ) return ;
 
 		$bag = new Bag( $this->getBaseUrl() );
 
