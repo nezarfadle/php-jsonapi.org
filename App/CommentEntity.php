@@ -1,17 +1,18 @@
 <?php  namespace App;
 
-use JsonApi\BaseEntity,
+use JsonApi\BaseTransformer,
 	JsonApi\Attributes
 
 ;
 
-class CommentEntity extends BaseEntity
+class CommentEntity extends BaseTransformer
 {
 
 	private $comment;
 
-	public function __construct( $comment )
+	public function __construct( $comment, $baseUrl )
 	{
+		parent::__construct( $baseUrl );
 		$this->comment = $comment;
 	}
 	
@@ -35,13 +36,6 @@ class CommentEntity extends BaseEntity
 		$attributes = new Attributes();
 		$attributes->set( "title", $this->comment->title )->set( "body", $this->comment->body );
 		return $attributes->get();
-	}
-
-	public function getLinks()
-	{
-		return [
-			'self' => 'http://example.com/comments/' . $this->getId()
-		];
 	}
 	
 }

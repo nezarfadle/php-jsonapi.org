@@ -1,40 +1,19 @@
 <?php  namespace JsonApi;
 
+use JsonApi\Utils\Url;
+
 class RelationshipResolver
 {
 
-	// public static function fromEntity( $parent, $entity )
-	// {
-	// 	return [
-	// 		'links' => [
-	// 			'self' => 'http://exmaople.com/' . $parent->getType() . '/' . $parent->getId() . '/relationships' . $entity->getType (),
-	// 			'related' => 'http://exmaople.com/' . $parent->getType() . '/' . $parent->getId() . '/' . $entity->getType (),
-	// 		],
-	// 		'data' => $entity->toIdentifier()
-	// 	];
-	// }
-
-	// public static function fromCollection( $parent, $childs, $collectionClassName )
-	// {
-	// 	$collection = new $collectionClassName( $childs );
-	// 	return [
-	// 		'links' => [
-	// 			'self' => 'http://exmaople.com/' . $parent->getType() . '/' . $parent->getId() . '/relationships' . $collection->getType (),
-	// 			'related' => 'http://exmaople.com/' . $parent->getType() . '/' . $parent->getId() . '/' . $collection->getType (),
-	// 		],
-	// 		'data' => $collection->getIdentifiers()
-	// 	];
-	// }
-
-	public static function resolve( $parent, $childs, $collectionClassName )
+	public static function resolve( $parent, $childs, $resolverClassName, $baseUrl )
 	{
-		$collection = new $collectionClassName( $childs );
+		$resolver = new $resolverClassName( $childs, $baseUrl );
 		return [
 			'links' => [
-				'self' => 'http://exmaople.com/' . $parent->getType() . '/' . $parent->getId() . '/relationships' . $collection->getType (),
-				'related' => 'http://exmaople.com/' . $parent->getType() . '/' . $parent->getId() . '/' . $collection->getType (),
+				'self' => Url::build( [ $baseUrl, $parent->getType(), $parent->getId(), 'relationships', $resolver->getType () ]),
+				'related' => Url::build( [ $baseUrl, $parent->getType(), $parent->getId(), $resolver->getType () ] )
 			],
-			'data' => $collection->toIdentifier()
+			'data' => $resolver->toIdentifier()
 		];
 	}
 	

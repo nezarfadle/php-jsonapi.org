@@ -5,17 +5,18 @@ include 'vendor/autoload.php';
 use App\Article,
 	App\Author,
 	App\Comment,
-	App\ArticleEntity,
+	App\ArticleTransformer,
 	JsonApi\Bag
 
 ;
 
 $op = isset($_GET['op']) ? $_GET['op'] : '';
 $include = isset($_GET['include']) ? $_GET['include'] : '';
+$baseUrl = 'http://awseome.com';
 
 switch ($op) {
 	case 'article':
-		$article = App\Tasks\GetArticleTask::get();
+		$article = App\Tasks\GetArticleTask::get( $baseUrl );
 
 		$data  = [
 			'data' => $article->toResource(),
@@ -27,7 +28,7 @@ switch ($op) {
 	case 'articles':
 	
 
-		$articles = App\Tasks\GetAllArticlesTask::get();
+		$articles = App\Tasks\GetAllArticlesTask::get( $baseUrl );
 		$resource = new Bag();
 		$included = new Bag();
 		

@@ -1,17 +1,18 @@
 <?php  namespace App;
 
-use JsonApi\BaseEntity,
+use JsonApi\BaseTransformer,
 	JsonApi\Attributes
 
 ;
 
-class AuthorEntity extends BaseEntity
+class AuthorEntity extends BaseTransformer
 {
 
 	private $author;
 
-	public function __construct( $author )
+	public function __construct( $author, $baseUrl )
 	{
+		parent::__construct( $baseUrl );
 		$this->author = $author;
 	}
 	
@@ -37,10 +38,4 @@ class AuthorEntity extends BaseEntity
 		return $this->author;
 	}
 
-	public function getLinks()
-	{
-		return [
-			'self' => 'http://example.com/author/' . $this->getId()
-		];
-	}
 }

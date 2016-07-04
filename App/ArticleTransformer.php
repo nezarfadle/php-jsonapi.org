@@ -1,0 +1,56 @@
+<?php  namespace App;
+
+use JsonApi\BaseTransformer,
+	JsonApi\Relationship,
+	JsonApi\Bag
+;
+
+class ArticleTransformer extends BaseTransformer
+{
+	private $article;
+
+	public function __construct( $article, $baseUrl )
+	{
+		parent::__construct( $baseUrl );
+		$this->article  = $article;
+	}
+
+	public function getId()
+	{
+		return $this->article->id;
+	}
+
+	public function getType()
+	{
+		return 'articles';
+	}
+
+	public function toRaw()
+	{
+		return $this->article;
+	}
+
+	public function getAttributes()
+	{
+		return [
+			'title' => $this->article->title,
+			'body' => $this->article->body,
+		];
+	}
+
+	public function getRelation()
+	{
+		return [
+			'authors' => new Relationship( $this->article->author, 'App\AuthorEntity' ),
+			'comments' => new Relationship( $this->article->comments, 'App\CommentsCollection' )
+		];
+	}
+
+	public function getExtra()
+	{
+		return [
+			'comments.authors' => new Relationship( $this->article->getCommentsAuthors(), 'App\AuthorasCollection' ),
+		];
+	}
+	
+}

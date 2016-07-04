@@ -3,12 +3,12 @@
 use App\Article,
 	App\Comment,
 	App\Author,
-	App\ArticleEntity
+	App\ArticleTransformer
 ;
 
 class GetAllArticlesTask
 {
-	public static function get()
+	public static function get( $baseUrl )
 	{
 		$data = [];	
 
@@ -19,7 +19,7 @@ class GetAllArticlesTask
 			$article->writtenBy( new Author( 1, "Nezar Fadle", "email@gmail.com" ));
 			$article->has( new Comment( $i, "First Comment", "Just First Comment" ));
 			$article->has( new Comment( $i + 1, "Second Comment", "Just Second Comment" ));
-			$articleResource = new ArticleEntity( $article );
+			$articleResource = new ArticleTransformer( $article, $baseUrl );
 
 			$data[] = $articleResource;
 			

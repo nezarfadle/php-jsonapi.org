@@ -3,12 +3,19 @@
 class Bag
 {
 
+	private $baseUrl;
+
+	public function __construct( $baseUrl )
+	{
+		$this->baseUrl = $baseUrl;
+	}
+
 	private $bag = [];
 
 	public function resolve( $entity, $resolver )
 	{
 		
-		$re = new $resolver( $entity );
+		$re = new $resolver( $entity, $this->baseUrl );
 		$resource = $re->toResource();
 		$this->add( $resource );
 		// if( !array_key_exists( $this->hash( $resource ) , $this->bag )) {
