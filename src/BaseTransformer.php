@@ -9,7 +9,7 @@ use JsonApi\Utils\Url,
 abstract class BaseTransformer
 {
 
-	protected $baseUrl;
+	protected $baseUrl, $sparseFieldsets;
 
 	abstract public function getId();
 	abstract public function getType();
@@ -17,9 +17,10 @@ abstract class BaseTransformer
 	abstract public function getAttributes();
 	
 	
-	public function __construct( $baseUrl )
+	public function __construct( $baseUrl, $sparseFieldsets = [] )
 	{
 		$this->baseUrl = $baseUrl;	
+		$this->sparseFieldsets = $sparseFieldsets;
 	}
 	
 	public function getMeta(){}
@@ -44,12 +45,23 @@ abstract class BaseTransformer
 		];
 	}
 
-	public function parseSparseFieldsets( $attrs, $sparseFieldsets = '' )
+	// protected function resolveSparseFieldsets( $attrs, $sparseFieldsets = '' )
+	protected function resolveSparseFieldsets( $attrs )
 	{
-		$sparseFieldsets = new StringValueObject( $sparseFieldsets );
-		if( $sparseFieldsets->isEmpty() ) return $attrs;
+		// $sparseFieldsets = new StringValueObject( $sparseFieldsets );
+		// if( $sparseFieldsets->isEmpty() ) return $attrs;
+		
+		// return ArrayUtil::spliceByKeys( ',', $sparseFieldsets, $attrs );
+		
+		if( isset( $this->sparseFieldsets[ $this->getType() ] )) {
+			return ArrayUtil::spliceByKeys( ',', $this->sparseFieldsets[ $this->getType() ], $attrs );
+		}
 
-		return ArrayUtil::spliceByKeys( ',', $sparseFieldsets, $attrs );
+		return $attrs;
+
+		// [
+		// 	"articles" => [ "title,body" ]
+		// ]
 	}
 
 	public function toResource()
@@ -58,8 +70,9 @@ abstract class BaseTransformer
 			"type" => $this->getType(), 
 			"id" => (string) $this->getId(),
 			'attributes' => 
-				$this->getAttributes()
-				// $this->parseSparseFieldsets( $this->getAttributes(), 'title,body' )
+				// $this->getAttributes()
+				// $this->resolveSparseFieldsets( $this->getAttributes(), $this->sparseFieldsets )
+				$this->resolveSparseFieldsets( $this->getAttributes() )
 		];
 
 		$relationships = $this->getRelationships();
@@ -95,7 +108,16 @@ abstract class BaseTransformer
 		$data = [];
 		foreach($relations as $key => $relation) 
 		{
-			$data[ $key ] = RelationshipResolver::resolve( $this, $relation->getParticipant(), $relation->getResolver(), $this->getBaseUrl() );
+			// $data[ $key ] = RelationshipResolver::resolve( $this, $relation->getParticipant(), $relation->getResolver(), $this->getBaseUrl() );
+			$resolver = $relation->createResolver();
+			
+			$data[ $key ] = [
+				'links' => [
+					'self' => Url::build( [ $this->getBaseUrl(), $this->getType(), $this->getId(), 'relationships', $resolver->getType() ]),
+					'related' => Url::build( [ $this->getBaseUrl(), $this->getType(), $this->getId(), $resolver->getType () ] )
+				],
+				'data' => $resolver->toIdentifier()
+			];
 		}
 		
 		return $data;
@@ -108,7 +130,7 @@ abstract class BaseTransformer
 
 	public function getIncluded( $whatToInclude = '' )
 	{
-		if( $whatToInclude == '' ) return ;
+		// if( $whatToInclude == '' ) return ;
 
 		$list = explode( ',', $whatToInclude);
 		if( ArrayUtil::isEmpty( $list ) ) return ;
@@ -120,7 +142,7 @@ abstract class BaseTransformer
 		{
 			if(in_array( $key, $list ))
 			{
-				$bag->resolve( $relation->getParticipant(), $relation->getResolver() );
+				$bag->resolve( $relation->getParticipant(), $relation->getResolver(), $this->sparseFieldsets );
 			}
 		}
 
@@ -129,7 +151,7 @@ abstract class BaseTransformer
 		{
 			if(in_array( $key, $list ))
 			{
-				$bag->resolve( $relation->getParticipant(), $relation->getResolver() );
+				$bag->resolve( $relation->getParticipant(), $relation->getResolver(), $this->sparseFieldsets );
 			}
 		}
 			

@@ -10,9 +10,9 @@ class CommentEntity extends BaseTransformer
 
 	private $comment;
 
-	public function __construct( $comment, $baseUrl )
+	public function __construct( $comment, $baseUrl, $sparseFieldsets = [] )
 	{
-		parent::__construct( $baseUrl );
+		parent::__construct( $baseUrl, $sparseFieldsets );
 		$this->comment = $comment;
 	}
 	

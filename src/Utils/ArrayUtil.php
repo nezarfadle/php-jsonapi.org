@@ -8,6 +8,11 @@ class ArrayUtil
 		
 	}
 
+	public function hasKey( $key, $array )
+	{
+		
+	}
+
 	public static function isEmpty( $array )
 	{
 		if( !is_array( $array ) || count( $array ) == 0 ) {
@@ -17,7 +22,7 @@ class ArrayUtil
 		return false;
 	}
 
-	public static function spliceByKeys( $delimiter, $string, $array)
+	public static function spliceByKeys( $delimiter, $string, $array )
 	{
 		$data = [];
 

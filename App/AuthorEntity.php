@@ -10,9 +10,9 @@ class AuthorEntity extends BaseTransformer
 
 	private $author;
 
-	public function __construct( $author, $baseUrl )
+	public function __construct( $author, $baseUrl, $sparseFieldsets = [] )
 	{
-		parent::__construct( $baseUrl );
+		parent::__construct( $baseUrl, $sparseFieldsets );
 		$this->author = $author;
 	}
 	

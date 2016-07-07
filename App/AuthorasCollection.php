@@ -1,13 +1,13 @@
 <?php  namespace App;
 
-use JsonApi\Collection;
+use JsonApi\BaseCollection;
 
-class AuthorasCollection extends Collection
+class AuthorasCollection extends BaseCollection
 {
 
-	public function __construct( $authors, $baseUrl )
+	public function __construct( $authors, $baseUrl, $sparseFieldsets = [] )
 	{
-		parent::__construct( 'comments.authors', $authors, 'App\AuthorEntity', $baseUrl );
+		parent::__construct( 'comments.authors', $authors, 'App\AuthorEntity', $baseUrl, $sparseFieldsets );
 	}
 	
 }

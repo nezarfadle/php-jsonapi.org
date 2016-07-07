@@ -1,13 +1,13 @@
 <?php  namespace App;
 
-use JsonApi\Collection;
+use JsonApi\BaseCollection;
 
-class CommentsCollection extends Collection
+class CommentsCollection extends BaseCollection
 {
 
-	public function __construct( $comments, $baseUrl )
+	public function __construct( $comments, $baseUrl, $sparseFieldsets = [] )
 	{
-		parent::__construct( 'comments', $comments, 'App\CommentEntity', $baseUrl );
+		parent::__construct( 'comments', $comments, 'App\CommentEntity', $baseUrl, $sparseFieldsets );
 	}
 	
 }

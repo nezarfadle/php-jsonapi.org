@@ -12,12 +12,11 @@ class Bag
 
 	private $bag = [];
 
-	public function resolve( $entity, $resolver )
+	public function resolve( $entity, $resolver, $sparseFieldsets = [] )
 	{
 		
-		$re = new $resolver( $entity, $this->baseUrl );
-		$resource = $re->toResource();
-		$this->add( $resource );
+		$resource = new $resolver( $entity, $this->baseUrl, $sparseFieldsets );
+		$this->add( $resource->toResource() );
 		// if( !array_key_exists( $this->hash( $resource ) , $this->bag )) {
 		// }
 		

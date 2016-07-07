@@ -9,9 +9,9 @@ class ArticleTransformer extends BaseTransformer
 {
 	private $article;
 
-	public function __construct( $article, $baseUrl )
+	public function __construct( $article, $baseUrl, $sparseFieldsets = [] )
 	{
-		parent::__construct( $baseUrl );
+		parent::__construct( $baseUrl, $sparseFieldsets );
 		$this->article  = $article;
 	}
 
@@ -41,15 +41,15 @@ class ArticleTransformer extends BaseTransformer
 	public function getRelation()
 	{
 		return [
-			'authors' => new Relationship( $this->article->author, 'App\AuthorEntity' ),
-			'comments' => new Relationship( $this->article->comments, 'App\CommentsCollection' )
+			'authors' => new Relationship( $this->article->author, 'App\AuthorEntity', $this->getBaseUrl() ),
+			'comments' => new Relationship( $this->article->comments, 'App\CommentsCollection', $this->getBaseUrl() )
 		];
 	}
 
 	public function getExtra()
 	{
 		return [
-			'comments.authors' => new Relationship( $this->article->getCommentsAuthors(), 'App\AuthorasCollection' ),
+			'comments.authors' => new Relationship( $this->article->getCommentsAuthors(), 'App\AuthorasCollection', $this->getBaseUrl() ),
 		];
 	}
 	

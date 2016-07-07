@@ -14,13 +14,20 @@ $op = isset($_GET['op']) ? $_GET['op'] : '';
 $include = isset($_GET['include']) ? $_GET['include'] : '';
 $baseUrl = 'http://awseome.com';
 
+$sparseFieldsets = [
+	"comments" => "title",
+	"articles" => "body",
+	"authors" => "email",
+];
+
 switch ($op) {
 	case 'article':
-		$article = App\Tasks\GetArticleTask::get( $baseUrl );
+
+		$article = App\Tasks\GetArticleTask::get( $baseUrl, $sparseFieldsets );
 
 		$data  = [
 			'data' => $article->toResource(),
-			'included' => $article->getIncluded($include)
+			'included' => $article->getIncluded( $include )
 		];
 		echo '<pre>', json_encode( $data, JSON_PRETTY_PRINT);
 		break;
@@ -28,19 +35,22 @@ switch ($op) {
 	case 'articles':
 	
 
-		$articles = App\Tasks\GetAllArticlesTask::get( $baseUrl );
-		$resource = new Bag();
-		$included = new Bag();
+		$articles = App\Tasks\GetAllArticlesTask::get( $baseUrl, $sparseFieldsets );
+		// print_r($articles[0]->getIncluded());
+		// print_r($articles[0]->getIncluded());
+		$resource = new Bag( $baseUrl );
+		$included = new Bag( $baseUrl );
 		
 		foreach ($articles as $article) {
 			$resource->add( $article->toResource() );
-			$included->add( $article->getIncluded() );
+			$included->add( $article->getIncluded( $include ) );
 		}
 
 		$data = [
 			"data" => $resource->getAll(),
 			"included" => $included->getAll(),
 		];
+
 		echo '<pre>', json_encode( $data, JSON_PRETTY_PRINT);
 		break;
 }

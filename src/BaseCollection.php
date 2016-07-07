@@ -1,15 +1,16 @@
 <?php  namespace jsonApi;
 
-abstract class Collection
+abstract class BaseCollection
 {
-	private $type, $entites, $resolver, $baseUrl;
+	private $type, $entites, $resolver, $baseUrl, $sparseFieldsets;
 
-	public function __construct( $type, $entites, $resolverClassName, $baseUrl )
+	public function __construct( $type, $entites, $resolverClassName, $baseUrl, $sparseFieldsets = [] )
 	{
 		$this->type = $type;
 		$this->entites = $entites;
 		$this->resolver = $resolverClassName;
 		$this->baseUrl = $baseUrl;
+		$this->sparseFieldsets = $sparseFieldsets;
 	}
 	
 	public function getType()
@@ -38,10 +39,14 @@ abstract class Collection
 		$data = [];
 
 		foreach ($this->entites as $entity) {
-			$entity = new $this->resolver( $entity, $this->getBaseUrl() );
+			$entity = new $this->resolver( $entity, $this->getBaseUrl(), $this->sparseFieldsets );
 			$data[] = $entity->toResource(); 
 		}
 		return $data;
 	}
 
+	// public function getOnly($foo)
+	// {
+	// 	return $this;
+	// }
 }
