@@ -1,6 +1,5 @@
 <?php  namespace JsonApi;
 
-
 class RelationshipCollection extends ArrayCollection
 {
 

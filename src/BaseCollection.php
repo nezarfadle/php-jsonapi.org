@@ -1,14 +1,14 @@
-<?php  namespace jsonApi;
+<?php  namespace JsonApi;
 
 abstract class BaseCollection
 {
-	private $type, $entites, $resolver, $baseUrl, $sparseFieldsets;
+	private $type, $entities, $transformer, $baseUrl, $sparseFieldsets;
 
-	public function __construct( $type, $entites, $resolverClassName, $baseUrl )
+	public function __construct( $type, $entities, $transformerClassName, $baseUrl )
 	{
 		$this->type = $type;
-		$this->entites = $entites;
-		$this->resolver = $resolverClassName;
+		$this->entities = new EntitiesCollection( $entities );
+		$this->transformer = $transformerClassName;
 		$this->baseUrl = $baseUrl;
 	}
 	
@@ -32,10 +32,11 @@ abstract class BaseCollection
 	{
 		$data = [];
 
-		foreach ( $this->entites as $entity ) {
-			$entity = new $this->resolver( $entity, $this->getBaseUrl() );
+		$this->entities->each( function( $key, $entity ) use( &$data ) {
+			$entity = new $this->transformer( $entity, $this->getBaseUrl() );
 			$data[] = $entity->toIdentifier(); 
-		}
+		});
+
 		return $data;
 	}
 
@@ -43,11 +44,25 @@ abstract class BaseCollection
 	{
 		$data = [];
 
-		foreach ($this->entites as $entity) {
-			$entity = new $this->resolver( $entity, $this->getBaseUrl() );
-			$data[] = $entity->getOnly( $this->sparseFieldsets )->toResource(); 
-		}
+		$this->entities->each( function( $key, $entity ) use( &$data ) {
+			$transformer = new $this->transformer( $entity, $this->getBaseUrl() );
+			$data[] = $transformer->getOnly( $this->sparseFieldsets )->toResource(); 
+		});
+		
 		return $data;
+	}
+
+	public function getIncluded( $whatToInclude = '' )
+	{
+		
+		$bag = new Bag();
+
+		$this->entities->each( function( $key, $entity ) use( &$bag, $whatToInclude ) {
+			$transformer = new $this->transformer( $entity, $this->getBaseUrl() );
+			$bag->add( $transformer->getOnly( $this->sparseFieldsets )->getIncluded( $whatToInclude )); 
+		});
+		
+		return $bag->getAll();
 	}
 
 }

@@ -52,5 +52,5 @@ class ArticleTransformer extends BaseTransformer
 			'comments.authors' => new Relationship( $this->article->getCommentsAuthors(), 'App\AuthorasCollection', $this->getBaseUrl() ),
 		];
 	}
-	
+
 }

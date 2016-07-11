@@ -2,7 +2,8 @@
 
 use JsonApi\Utils\Url,
 	JsonApi\Utils\ArrayUtil,
-	JsonApi\ValueObjects\StringValueObject
+	JsonApi\ValueObjects\StringValueObject,
+	JsonApi\ValueObjects\ArrayValueObject
 ;
 
 abstract class BaseTransformer
@@ -21,6 +22,33 @@ abstract class BaseTransformer
 		$this->baseUrl = $baseUrl;	
 	}
 	
+
+	protected function hasSparseFieldsets()
+	{
+		return isset( $this->sparseFieldsets[ $this->getType() ] );
+	}
+
+	protected function hasRelationships()
+	{
+		return count( $this->getRelationships() );
+	}
+
+	protected function hasMeta()
+	{
+		return count( $this->getMeta() );
+	}
+
+	protected function resolveSparseFieldsets()
+	{
+		
+		if( $this->hasSparseFieldsets() ) {
+			return ArrayUtil::spliceByKeys( $this->sparseFieldsets[ $this->getType() ], $this->getAttributes() );
+		}
+
+		// return $attrs;
+		return $this->getAttributes();
+	}
+
 	public function getMeta(){}
 
 	public function getBaseUrl()
@@ -47,21 +75,6 @@ abstract class BaseTransformer
 	{
 		$this->sparseFieldsets = $sparseFieldsets;
 		return $this;
-	}
-
-	protected function hasSparseFieldsets()
-	{
-		return isset( $this->sparseFieldsets[ $this->getType() ] );
-	}
-
-	protected function resolveSparseFieldsets()
-	{
-		
-		if( $this->hasSparseFieldsets() ) {
-			return ArrayUtil::spliceByKeys( $this->sparseFieldsets[ $this->getType() ], $this->getAttributes() );
-		}
-
-		return $attrs;
 	}
 
 	public function getRelation()
@@ -105,9 +118,8 @@ abstract class BaseTransformer
 			'attributes' => $this->resolveSparseFieldsets()
 		];
 
-		$relationships = $this->getRelationships();
-		if( !empty( $relationships )) {
-			$data['relationships'] = $relationships;
+		if( $this->hasRelationships() ) {
+			$data['relationships'] = $this->getRelationships();
 		}
 
 		/**
@@ -118,9 +130,8 @@ abstract class BaseTransformer
 		/**
 		 * build the resource meta
 		 */
-		$meta = $this->getMeta();
-		if( !empty( $meta )) {
-			$data['meta'] = $meta;
+		if( $this->hasMeta() ) {
+			$data['meta'] = $this->getMeta();
 		}
 
 		return $data;
@@ -128,31 +139,33 @@ abstract class BaseTransformer
 
 	public function getIncluded( $whatToInclude = '' )
 	{
-		// if( $whatToInclude == '' ) return ;
+		
+		$whatToInclude = new StringValueObject( $whatToInclude );
+		$fieldsToBeIncluded = new ArrayValueObject( $whatToInclude->toArray( ',' ) );
 
-		$list = explode( ',', $whatToInclude);
-		if( ArrayUtil::isEmpty( $list ) ) return ;
+		if( $fieldsToBeIncluded->isEmpty() ) return ;
 
-		$bag = new Bag( $this->getBaseUrl() );
+	
+		$bag = new Bag();		
 
-		$relations = $this->getRelation();
-		foreach($relations as $key => $relation) 
-		{
-			if(in_array( $key, $list ))
-			{
-				$bag->add( $relation->toResource( $this->sparseFieldsets ));
-			}
-		}
-
-		$extraRelations = $this->getExtra();
-		foreach($extraRelations as $key => $relation) 
-		{
-			if(in_array( $key, $list ))
-			{
-				$bag->add( $relation->toResource( $this->sparseFieldsets ));
-			}
-		}
+		$relations = new RelationshipCollection( $this->getRelation() );
+		$relations->each( function( $key, $relation ) use( &$bag, $fieldsToBeIncluded ) {
 			
+			if( $fieldsToBeIncluded->hasValue( $key ))
+			{
+				$bag->add( $relation->toResource( $this->sparseFieldsets ));
+			}
+
+		});
+		
+		$extraRelations = new RelationshipCollection( $this->getExtra() );
+		$extraRelations->each( function( $key, $relation ) use( &$bag, $fieldsToBeIncluded ) {
+			if( $fieldsToBeIncluded->hasValue( $key ))
+			{
+				$bag->add( $relation->toResource( $this->sparseFieldsets ));
+			}
+		});
+		
 		return $bag->getAll();
 	}
 

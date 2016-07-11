@@ -23,5 +23,10 @@ class StringValueObject
 	{
 		return $this->string;
 	}
+
+	public function toArray( $delimiter )
+	{
+		return explode( $delimiter, $this->string );
+	}
 	
 }

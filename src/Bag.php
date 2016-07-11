@@ -3,26 +3,13 @@
 class Bag
 {
 
-	private $baseUrl;
-
-	public function __construct( $baseUrl )
-	{
-		$this->baseUrl = $baseUrl;
-	}
-
 	private $bag = [];
-
-	// public function resolve( $entity, $resolver, $sparseFieldsets = [] )
-	// {
-	// 	$resource = new $resolver( $entity, $this->baseUrl );
-	// 	$this->add( $resource->getOnly( $sparseFieldsets )->toResource() );
-	// }
 
 	private function hash( $obj )
 	{
-		// return spl_object_hash( (object)$obj );
-		return $obj['id'].$obj['type'];
-		// print_r($obj);
+		// return $obj['id'].$obj['type'];
+		// return md5( serialize( $obj ));
+		return json_encode( $obj );
 	}
 
 	private function addItem( $item )
@@ -35,13 +22,12 @@ class Bag
 		foreach($items as $item) {
 			$this->addItem( $item );
 		}
-		// $this->bag = array_merge( $this->bag, $items );
 	}
 
 	public function add( $items )
 	{
-
-		if( !array_key_exists( 'type', $items ) )  {
+		// if( !array_key_exists( 'type', $items ) )  {
+		if( isset( $items[0] ) && is_array( $items[0] ) )  {
 			$this->addItems( $items );
 		} else {
 			$this->addItem( $items );

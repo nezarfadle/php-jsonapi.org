@@ -6,6 +6,7 @@ use App\Article,
 	App\Author,
 	App\Comment,
 	App\ArticleTransformer,
+	App\ArticleCollectionTransformer,
 	JsonApi\Bag
 
 ;
@@ -15,7 +16,7 @@ $include = isset($_GET['include']) ? $_GET['include'] : '';
 $baseUrl = 'http://awseome.com';
 
 $sparseFieldsets = [
-	"comments" => "title",
+	"comments" => "body",
 	"articles" => "body",
 	"authors" => "email",
 ];
@@ -36,17 +37,10 @@ switch ($op) {
 	
 
 		$articles = App\Tasks\GetAllArticlesTask::get( $baseUrl );
-		$resource = new Bag( $baseUrl );
-		$included = new Bag( $baseUrl );
-		
-		foreach ($articles as $article) {
-			$resource->add( $article->getOnly( $sparseFieldsets )->toResource() );
-			$included->add( $article->getIncluded( $include ) );
-		}
-
+		$col = new ArticleCollectionTransformer( $articles, $baseUrl );
 		$data = [
-			"data" => $resource->getAll(),
-			"included" => $included->getAll(),
+			"data" => $col->getOnly( $sparseFieldsets )->toResource(),
+			"included" => $col->getIncluded( $include ),
 		];
 
 		echo '<pre>', json_encode( $data, JSON_PRETTY_PRINT);
