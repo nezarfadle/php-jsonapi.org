@@ -8,7 +8,7 @@ use App\Article,
 
 class GetAllArticlesTask
 {
-	public static function get( $baseUrl, $sparseFieldsets = [] )
+	public static function get( $baseUrl )
 	{
 		$data = [];	
 		$author1 = new Author(10, "Author no 10 ", "email@gmail.com" );
@@ -21,7 +21,7 @@ class GetAllArticlesTask
 			$article->writtenBy( new Author( 1, "Nezar Fadle", "email@gmail.com" ));
 			$article->has( new Comment( $i, "First Comment", "Just First Comment", $author1 ));
 			$article->has( new Comment( $i + 1, "Second Comment", "Just Second Comment", $author2 ));
-			$articleResource = new ArticleTransformer( $article, $baseUrl, $sparseFieldsets );
+			$articleResource = new ArticleTransformer( $article, $baseUrl );
 
 			$data[] = $articleResource;
 			

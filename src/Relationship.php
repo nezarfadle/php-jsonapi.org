@@ -2,18 +2,18 @@
 
 class Relationship
 {
-	private $participant, $resolver, $baseUrl;
+	private $entity, $resolver, $baseUrl;
 
-	public function __construct( $participant, $resolver, $baseUrl )
+	public function __construct( $entity, $resolver, $baseUrl )
 	{
-		$this->participant = $participant;
+		$this->entity = $entity;
 		$this->resolver = $resolver;
 		$this->baseUrl = $baseUrl;
 	}
 
 	public function getParticipant()
 	{
-		return $this->participant;
+		return $this->entity;
 	}
 
 	public function getResolver()
@@ -23,7 +23,13 @@ class Relationship
 
 	public function createResolver()
 	{
-		return new $this->resolver( $this->participant, $this->baseUrl );
+		return new $this->resolver( $this->entity, $this->baseUrl );
+	}
+
+	public function toResource( $sparseFieldsets = [] )
+	{
+		$resource = new $this->resolver( $this->entity, $this->baseUrl );
+		return $resource->getOnly( $sparseFieldsets )->toResource();
 	}
 	
 }

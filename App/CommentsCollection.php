@@ -5,9 +5,9 @@ use JsonApi\BaseCollection;
 class CommentsCollection extends BaseCollection
 {
 
-	public function __construct( $comments, $baseUrl, $sparseFieldsets = [] )
+	public function __construct( $comments, $baseUrl )
 	{
-		parent::__construct( 'comments', $comments, 'App\CommentEntity', $baseUrl, $sparseFieldsets );
+		parent::__construct( 'comments', $comments, 'App\CommentEntity', $baseUrl );
 	}
 	
 }

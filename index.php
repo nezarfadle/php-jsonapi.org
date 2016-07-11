@@ -23,10 +23,10 @@ $sparseFieldsets = [
 switch ($op) {
 	case 'article':
 
-		$article = App\Tasks\GetArticleTask::get( $baseUrl, $sparseFieldsets );
+		$article = App\Tasks\GetArticleTask::get( $baseUrl );
 
 		$data  = [
-			'data' => $article->toResource(),
+			'data' => $article->getOnly( $sparseFieldsets )->toResource(),
 			'included' => $article->getIncluded( $include )
 		];
 		echo '<pre>', json_encode( $data, JSON_PRETTY_PRINT);
@@ -35,12 +35,12 @@ switch ($op) {
 	case 'articles':
 	
 
-		$articles = App\Tasks\GetAllArticlesTask::get( $baseUrl, $sparseFieldsets );
+		$articles = App\Tasks\GetAllArticlesTask::get( $baseUrl );
 		$resource = new Bag( $baseUrl );
 		$included = new Bag( $baseUrl );
 		
 		foreach ($articles as $article) {
-			$resource->add( $article->toResource() );
+			$resource->add( $article->getOnly( $sparseFieldsets )->toResource() );
 			$included->add( $article->getIncluded( $include ) );
 		}
 

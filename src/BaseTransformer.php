@@ -5,7 +5,6 @@ use JsonApi\Utils\Url,
 	JsonApi\ValueObjects\StringValueObject
 ;
 
-
 abstract class BaseTransformer
 {
 
@@ -17,10 +16,9 @@ abstract class BaseTransformer
 	abstract public function getAttributes();
 	
 	
-	public function __construct( $baseUrl, $sparseFieldsets = [] )
+	public function __construct( $baseUrl )
 	{
 		$this->baseUrl = $baseUrl;	
-		$this->sparseFieldsets = $sparseFieldsets;
 	}
 	
 	public function getMeta(){}
@@ -45,23 +43,58 @@ abstract class BaseTransformer
 		];
 	}
 
-	// protected function resolveSparseFieldsets( $attrs, $sparseFieldsets = '' )
-	protected function resolveSparseFieldsets( $attrs )
+	public function getOnly( $sparseFieldsets = [] )
 	{
-		// $sparseFieldsets = new StringValueObject( $sparseFieldsets );
-		// if( $sparseFieldsets->isEmpty() ) return $attrs;
+		$this->sparseFieldsets = $sparseFieldsets;
+		return $this;
+	}
+
+	protected function hasSparseFieldsets()
+	{
+		return isset( $this->sparseFieldsets[ $this->getType() ] );
+	}
+
+	protected function resolveSparseFieldsets()
+	{
 		
-		// return ArrayUtil::spliceByKeys( ',', $sparseFieldsets, $attrs );
-		
-		if( isset( $this->sparseFieldsets[ $this->getType() ] )) {
-			return ArrayUtil::spliceByKeys( $this->sparseFieldsets[ $this->getType() ], $attrs );
+		if( $this->hasSparseFieldsets() ) {
+			return ArrayUtil::spliceByKeys( $this->sparseFieldsets[ $this->getType() ], $this->getAttributes() );
 		}
 
 		return $attrs;
+	}
 
-		// [
-		// 	"articles" => [ "title,body" ]
-		// ]
+	public function getRelation()
+	{
+		return [];	
+	}
+
+	public function getExtra()
+	{
+		return [];
+	}
+
+	public function getRelationships()
+	{
+
+		
+		$relations = new RelationshipCollection( $this->getRelation() );
+		$data = [];
+		
+		$relations->each( function( $key, $relation ) use( &$data ) {
+			
+			$resolver = $relation->createResolver();			
+			$data[ $key ] = [
+				'links' => [
+					'self' => Url::build( [ $this->getBaseUrl(), $this->getType(), $this->getId(), 'relationships', $resolver->getType() ]),
+					'related' => Url::build( [ $this->getBaseUrl(), $this->getType(), $this->getId(), $resolver->getType () ] )
+				],
+				'data' => $resolver->toIdentifier()
+			];
+
+		});
+		
+		return $data;
 	}
 
 	public function toResource()
@@ -69,8 +102,7 @@ abstract class BaseTransformer
 		$data = [
 			"type" => $this->getType(), 
 			"id" => (string) $this->getId(),
-			'attributes' => 
-				$this->resolveSparseFieldsets( $this->getAttributes() )
+			'attributes' => $this->resolveSparseFieldsets()
 		];
 
 		$relationships = $this->getRelationships();
@@ -94,38 +126,6 @@ abstract class BaseTransformer
 		return $data;
 	}
 
-	public function getRelation()
-	{
-		return [];	
-	}
-
-	public function getRelationships()
-	{
-
-		$relations = $this->getRelation();
-		$data = [];
-		foreach($relations as $key => $relation) 
-		{
-			// $data[ $key ] = RelationshipResolver::resolve( $this, $relation->getParticipant(), $relation->getResolver(), $this->getBaseUrl() );
-			$resolver = $relation->createResolver();
-			
-			$data[ $key ] = [
-				'links' => [
-					'self' => Url::build( [ $this->getBaseUrl(), $this->getType(), $this->getId(), 'relationships', $resolver->getType() ]),
-					'related' => Url::build( [ $this->getBaseUrl(), $this->getType(), $this->getId(), $resolver->getType () ] )
-				],
-				'data' => $resolver->toIdentifier()
-			];
-		}
-		
-		return $data;
-	}
-
-	public function getExtra()
-	{
-		return [];
-	}
-
 	public function getIncluded( $whatToInclude = '' )
 	{
 		// if( $whatToInclude == '' ) return ;
@@ -140,7 +140,7 @@ abstract class BaseTransformer
 		{
 			if(in_array( $key, $list ))
 			{
-				$bag->resolve( $relation->getParticipant(), $relation->getResolver(), $this->sparseFieldsets );
+				$bag->add( $relation->toResource( $this->sparseFieldsets ));
 			}
 		}
 
@@ -149,7 +149,7 @@ abstract class BaseTransformer
 		{
 			if(in_array( $key, $list ))
 			{
-				$bag->resolve( $relation->getParticipant(), $relation->getResolver(), $this->sparseFieldsets );
+				$bag->add( $relation->toResource( $this->sparseFieldsets ));
 			}
 		}
 			

@@ -12,15 +12,11 @@ class Bag
 
 	private $bag = [];
 
-	public function resolve( $entity, $resolver, $sparseFieldsets = [] )
-	{
-		
-		$resource = new $resolver( $entity, $this->baseUrl, $sparseFieldsets );
-		$this->add( $resource->toResource() );
-		// if( !array_key_exists( $this->hash( $resource ) , $this->bag )) {
-		// }
-		
-	}
+	// public function resolve( $entity, $resolver, $sparseFieldsets = [] )
+	// {
+	// 	$resource = new $resolver( $entity, $this->baseUrl );
+	// 	$this->add( $resource->getOnly( $sparseFieldsets )->toResource() );
+	// }
 
 	private function hash( $obj )
 	{
@@ -60,7 +56,7 @@ class Bag
 
 	public function getAll()
 	{
-		return array_values($this->bag);
+		return array_values( $this->bag );
 	}
 
 
