@@ -18,7 +18,7 @@ class ArrayValueObject
 		return false;
 	}
 
-	public function hasValue( $value )
+	public function has( $value )
 	{
 		return in_array( $value, $this->array );
 	}

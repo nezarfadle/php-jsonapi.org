@@ -24,9 +24,14 @@ class StringValueObject
 		return $this->string;
 	}
 
-	public function toArray( $delimiter )
+	public function toArray( $delimiter = ',')
 	{
 		return explode( $delimiter, $this->string );
+	}
+
+	public function toArrayValueObject()
+	{
+		return new ArrayValueObject( $this->toArray() );
 	}
 	
 }

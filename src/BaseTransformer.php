@@ -90,7 +90,6 @@ abstract class BaseTransformer
 	public function getRelationships()
 	{
 
-		
 		$relations = new RelationshipCollection( $this->getRelation() );
 		$data = [];
 		
@@ -141,7 +140,7 @@ abstract class BaseTransformer
 	{
 		
 		$whatToInclude = new StringValueObject( $whatToInclude );
-		$fieldsToBeIncluded = new ArrayValueObject( $whatToInclude->toArray( ',' ) );
+		$fieldsToBeIncluded = $whatToInclude->toArrayValueObject();
 
 		if( $fieldsToBeIncluded->isEmpty() ) return ;
 
@@ -149,9 +148,9 @@ abstract class BaseTransformer
 		$bag = new Bag();		
 
 		$relations = new RelationshipCollection( $this->getRelation() );
-		$relations->each( function( $key, $relation ) use( &$bag, $fieldsToBeIncluded ) {
+		$relations->each( function( $entityName, $relation ) use( &$bag, $fieldsToBeIncluded ) {
 			
-			if( $fieldsToBeIncluded->hasValue( $key ))
+			if( $fieldsToBeIncluded->has( $entityName ))
 			{
 				$bag->add( $relation->toResource( $this->sparseFieldsets ));
 			}
@@ -159,14 +158,14 @@ abstract class BaseTransformer
 		});
 		
 		$extraRelations = new RelationshipCollection( $this->getExtra() );
-		$extraRelations->each( function( $key, $relation ) use( &$bag, $fieldsToBeIncluded ) {
-			if( $fieldsToBeIncluded->hasValue( $key ))
+		$extraRelations->each( function( $entityName, $relation ) use( &$bag, $fieldsToBeIncluded ) {
+			if( $fieldsToBeIncluded->has( $entityName ))
 			{
 				$bag->add( $relation->toResource( $this->sparseFieldsets ));
 			}
 		});
 		
-		return $bag->getAll();
+		return $bag->toArray();
 	}
 
 	

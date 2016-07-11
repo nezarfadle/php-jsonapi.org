@@ -62,7 +62,7 @@ abstract class BaseCollection
 			$bag->add( $transformer->getOnly( $this->sparseFieldsets )->getIncluded( $whatToInclude )); 
 		});
 		
-		return $bag->getAll();
+		return $bag->toArray();
 	}
 
 }

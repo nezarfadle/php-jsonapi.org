@@ -8,8 +8,8 @@ class Bag
 	private function hash( $obj )
 	{
 		// return $obj['id'].$obj['type'];
-		// return md5( serialize( $obj ));
-		return json_encode( $obj );
+		return md5( serialize( $obj ));
+		// return json_encode( $obj );
 	}
 
 	private function addItem( $item )
@@ -40,7 +40,7 @@ class Bag
 		return $this->bag[ $index ];
 	}
 
-	public function getAll()
+	public function toArray()
 	{
 		return array_values( $this->bag );
 	}
