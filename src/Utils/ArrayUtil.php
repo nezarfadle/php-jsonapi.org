@@ -22,7 +22,7 @@ class ArrayUtil
 		return false;
 	}
 
-	public static function spliceByKeys( $delimiter, $string, $array )
+	public static function spliceByKeys( $string, $array, $delimiter = ',' )
 	{
 		$data = [];
 

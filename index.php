@@ -36,8 +36,6 @@ switch ($op) {
 	
 
 		$articles = App\Tasks\GetAllArticlesTask::get( $baseUrl, $sparseFieldsets );
-		// print_r($articles[0]->getIncluded());
-		// print_r($articles[0]->getIncluded());
 		$resource = new Bag( $baseUrl );
 		$included = new Bag( $baseUrl );
 		
@@ -55,17 +53,17 @@ switch ($op) {
 		break;
 }
 
-class Foo
-{
-	public $id;
-	public function __construct( $id )
-	{
-		$this->id = $id;
-	}
-}
+// class Foo
+// {
+// 	public $id;
+// 	public function __construct( $id )
+// 	{
+// 		$this->id = $id;
+// 	}
+// }
 
-$f1 = new Foo(1);
-$f2 = new Foo(2);
+// $f1 = new Foo(1);
+// $f2 = new Foo(2);
 
 // echo spl_object_hash( $f1 ), '<br>';
 // echo spl_object_hash( $f2 ), '<br>';

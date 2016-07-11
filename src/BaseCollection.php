@@ -45,8 +45,4 @@ abstract class BaseCollection
 		return $data;
 	}
 
-	// public function getOnly($foo)
-	// {
-	// 	return $this;
-	// }
 }

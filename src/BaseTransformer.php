@@ -54,7 +54,7 @@ abstract class BaseTransformer
 		// return ArrayUtil::spliceByKeys( ',', $sparseFieldsets, $attrs );
 		
 		if( isset( $this->sparseFieldsets[ $this->getType() ] )) {
-			return ArrayUtil::spliceByKeys( ',', $this->sparseFieldsets[ $this->getType() ], $attrs );
+			return ArrayUtil::spliceByKeys( $this->sparseFieldsets[ $this->getType() ], $attrs );
 		}
 
 		return $attrs;
@@ -70,8 +70,6 @@ abstract class BaseTransformer
 			"type" => $this->getType(), 
 			"id" => (string) $this->getId(),
 			'attributes' => 
-				// $this->getAttributes()
-				// $this->resolveSparseFieldsets( $this->getAttributes(), $this->sparseFieldsets )
 				$this->resolveSparseFieldsets( $this->getAttributes() )
 		];
 
