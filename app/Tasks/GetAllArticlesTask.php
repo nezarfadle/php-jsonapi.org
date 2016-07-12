@@ -22,7 +22,7 @@ class GetAllArticlesTask
 			// $article->writtenBy( new Author( 1, "Nezar Fadle", "email@gmail.com" ));
 			// $article->has( new Comment( $i, "Comment - $i", "Just Comment", $author1 ));
 			// $article->has( new Comment( $i + 1, "Comment - " . ($i + 1), "Just Comment", $author2 ));
-			$article->has( new Comment( $i, "Comment", "Just Comment", $author1 ));
+			// $article->has( new Comment( $i, "Comment", "Just Comment", $author1 ));
 			$articleResource = new ArticleTransformer( $article, $baseUrl );
 
 			$articles[] = $article;

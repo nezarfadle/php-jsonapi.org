@@ -9,9 +9,9 @@ class Result
 		$this->result = $result;
 	}
 
-	public function hasResult()
+	public function hasContent()
 	{
-		return empty( $this->result );
+		return !empty( $this->result );
 	}
 
 	public function getContent()
