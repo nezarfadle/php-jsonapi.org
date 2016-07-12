@@ -3,7 +3,8 @@
 use JsonApi\Utils\Url,
 	JsonApi\Utils\ArrayUtil,
 	JsonApi\ValueObjects\StringValueObject,
-	JsonApi\ValueObjects\ArrayValueObject
+	JsonApi\ValueObjects\ArrayValueObject,
+	JsonApi\Collections\RelationshipCollection
 ;
 
 abstract class BaseTransformer

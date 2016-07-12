@@ -1,5 +1,7 @@
 <?php  namespace JsonApi;
 
+use JsonApi\Collections\EntitiesCollection;
+
 abstract class BaseCollection
 {
 	private $type, $entities, $transformer, $baseUrl, $sparseFieldsets;
