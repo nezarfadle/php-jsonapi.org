@@ -42,7 +42,7 @@ class ArticleTransformer extends BaseTransformer
 	{
 		return [
 			'authors' => new Relationship( $this->article->author, 'App\AuthorEntity', $this->getBaseUrl() ),
-			'comments' => new Relationship( $this->article->comments, 'App\CommentsCollection', $this->getBaseUrl() )
+			'comments' => new Relationship( $this->article->getComments(), 'App\CommentsCollection', $this->getBaseUrl() )
 		];
 	}
 

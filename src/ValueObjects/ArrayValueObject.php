@@ -22,4 +22,5 @@ class ArrayValueObject
 	{
 		return in_array( $value, $this->array );
 	}
+
 }

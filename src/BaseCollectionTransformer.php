@@ -52,6 +52,7 @@ abstract class BaseCollectionTransformer
 		});
 		
 		return $data;
+
 	}
 
 	public function getIncluded( $whatToInclude = '' )

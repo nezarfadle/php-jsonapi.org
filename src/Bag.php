@@ -26,13 +26,11 @@ class Bag
 
 	public function add( $items )
 	{
-		// if( !array_key_exists( 'type', $items ) )  {
 		if( isset( $items[0] ) && is_array( $items[0] ) )  {
 			$this->addItems( $items );
 		} else {
 			$this->addItem( $items );
-		}
-		
+		}	
 	}
 
 	public function getItem( $index )

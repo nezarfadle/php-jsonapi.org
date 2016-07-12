@@ -152,7 +152,10 @@ abstract class BaseTransformer
 			
 			if( $fieldsToBeIncluded->has( $entityName ))
 			{
-				$bag->add( $relation->toResource( $this->sparseFieldsets ));
+				// if( !empty($relation->toResource( $this->sparseFieldsets )))
+				// {
+					$bag->add( $relation->toResource( $this->sparseFieldsets ));
+				// }
 			}
 
 		});
@@ -161,11 +164,16 @@ abstract class BaseTransformer
 		$extraRelations->each( function( $entityName, $relation ) use( &$bag, $fieldsToBeIncluded ) {
 			if( $fieldsToBeIncluded->has( $entityName ))
 			{
-				$bag->add( $relation->toResource( $this->sparseFieldsets ));
+				// $bag->add( $relation->toResource( $this->sparseFieldsets ));
+				// if( !empty($relation->toResource( $this->sparseFieldsets )))
+				// {
+					$bag->add( $relation->toResource( $this->sparseFieldsets ));
+				// }
 			}
 		});
 		
 		return $bag->toArray();
+		 
 	}
 
 	

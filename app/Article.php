@@ -24,6 +24,15 @@ class Article
 		$this->commentsAuthors[] = $comment->author;
 	}
 
+	public function getComments()
+	{
+		// if( empty($this->comments)) {
+		// 	return ;
+		// }
+
+		return $this->comments;
+	}
+
 	public function getCommentsAuthors()
 	{
 		return $this->commentsAuthors;

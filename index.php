@@ -45,18 +45,3 @@ switch ($op) {
 		echo '<pre>', json_encode( $data, JSON_PRETTY_PRINT);
 		break;
 }
-
-// class Foo
-// {
-// 	public $id;
-// 	public function __construct( $id )
-// 	{
-// 		$this->id = $id;
-// 	}
-// }
-
-// $f1 = new Foo(1);
-// $f2 = new Foo(2);
-
-// echo spl_object_hash( $f1 ), '<br>';
-// echo spl_object_hash( $f2 ), '<br>';
