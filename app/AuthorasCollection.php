@@ -1,8 +1,8 @@
 <?php  namespace App;
 
-use JsonApi\BaseCollection;
+use JsonApi\BaseCollectionTransformer;
 
-class AuthorasCollection extends BaseCollection
+class AuthorasCollection extends BaseCollectionTransformer
 {
 
 	public function __construct( $authors, $baseUrl )

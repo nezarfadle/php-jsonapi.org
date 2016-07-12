@@ -3,14 +3,15 @@
 use App\Article,
 	App\Comment,
 	App\Author,
-	App\ArticleTransformer
+	App\ArticleTransformer,
+	App\ArticleCollectionTransformer
 ;
 
 class GetAllArticlesTask
 {
 	public static function get( $baseUrl )
 	{
-		$data = [];	
+		$articles = [];	
 		$author1 = new Author(10, "Author no 10 ", "email@gmail.com" );
 		$author2 = new Author(20, "Author no 20 ", "email@gmail.com" );
 
@@ -24,11 +25,10 @@ class GetAllArticlesTask
 			$article->has( new Comment( $i, "Comment", "Just Comment", $author1 ));
 			$articleResource = new ArticleTransformer( $article, $baseUrl );
 
-			// $data[] = $articleResource;
-			$data[] = $article;
+			$articles[] = $article;
 			
 		}
 
-		return $data;
+		return new ArticleCollectionTransformer( $articles, $baseUrl );
 	}
 }

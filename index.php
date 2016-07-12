@@ -37,10 +37,9 @@ switch ($op) {
 	
 
 		$articles = App\Tasks\GetAllArticlesTask::get( $baseUrl );
-		$col = new ArticleCollectionTransformer( $articles, $baseUrl );
 		$data = [
-			"data" => $col->getOnly( $sparseFieldsets )->toResource(),
-			"included" => $col->getIncluded( $include ),
+			"data" => $articles->getOnly( $sparseFieldsets )->toResource(),
+			"included" => $articles->getIncluded( $include ),
 		];
 
 		echo '<pre>', json_encode( $data, JSON_PRETTY_PRINT);

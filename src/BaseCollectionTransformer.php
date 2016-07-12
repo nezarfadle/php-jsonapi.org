@@ -2,7 +2,7 @@
 
 use JsonApi\Collections\EntitiesCollection;
 
-abstract class BaseCollection
+abstract class BaseCollectionTransformer
 {
 	private $type, $entities, $transformer, $baseUrl, $sparseFieldsets;
 
