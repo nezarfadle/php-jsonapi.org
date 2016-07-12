@@ -9,7 +9,7 @@ class Result
 		$this->result = $result;
 	}
 
-	public function isEmpty()
+	public function hasResult()
 	{
 		return empty( $this->result );
 	}
