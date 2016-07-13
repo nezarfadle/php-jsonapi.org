@@ -1,4 +1,4 @@
-<?php  namespace JsonApi;
+<?php namespace JsonApi\Core;
 
 use JsonApi\Collections\EntitiesCollection;
 
@@ -6,7 +6,7 @@ abstract class BaseCollectionTransformer
 {
 	private $type, $entities, $transformer, $baseUrl, $sparseFieldsets;
 
-	public function __construct( $type, $entities, $transformerClassName, $baseUrl )
+	public function __construct( $type, $entities = [], $transformerClassName, $baseUrl )
 	{
 		$this->type = $type;
 		$this->entities = new EntitiesCollection( $entities );

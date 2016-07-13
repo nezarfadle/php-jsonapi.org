@@ -7,13 +7,13 @@ use App\Article,
 	App\Comment,
 	App\ArticleTransformer,
 	App\ArticleCollectionTransformer,
-	JsonApi\Bag
+	JsonApi\Core\Bag
 
 ;
 
 $op = isset($_GET['op']) ? $_GET['op'] : '';
 $include = isset($_GET['include']) ? $_GET['include'] : '';
-$baseUrl = 'http://awseome.com';
+$baseUrl = 'http://awesome.com';
 
 $sparseFieldsets = [
 	"comments" => "body",

@@ -1,4 +1,4 @@
-<?php namespace JsonApi;
+<?php namespace JsonApi\Core;
 
 class Relationship
 {

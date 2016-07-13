@@ -1,6 +1,6 @@
 <?php  namespace App;
 
-use JsonApi\BaseCollectionTransformer;
+use JsonApi\Core\BaseCollectionTransformer;
 
 class CommentsCollection extends BaseCollectionTransformer
 {

@@ -3,14 +3,23 @@
 class ArrayUtil
 {
 
-	public function explode()
+	public static function merge( $arrays = [] )
 	{
-		
+		$buffer = [];
+
+		foreach ( $arrays as $array) {
+
+			if( !ArrayUtil::isEmpty( $array )) {
+				$buffer = array_merge( $buffer, $array );
+			}
+		}
+
+		return $buffer;
 	}
 
-	public function hasKey( $key, $array )
+	public function arrayValues( $array = [] )
 	{
-		
+		return array_values( $array );
 	}
 
 	public static function isEmpty( $array )

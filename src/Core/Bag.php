@@ -1,4 +1,4 @@
-<?php  namespace JsonApi;
+<?php namespace JsonApi\Core;
 
 class Bag
 {
@@ -7,9 +7,7 @@ class Bag
 
 	private function hash( $obj )
 	{
-		// return $obj['id'].$obj['type'];
 		return md5( serialize( $obj ));
-		// return json_encode( $obj );
 	}
 
 	private function addItem( $item )
@@ -19,7 +17,7 @@ class Bag
 
 	private function addItems( $items )
 	{
-		foreach($items as $item) {
+		foreach( $items as $item ) {
 			$this->addItem( $item );
 		}
 	}
@@ -31,11 +29,6 @@ class Bag
 		} else {
 			$this->addItem( $items );
 		}	
-	}
-
-	public function getItem( $index )
-	{
-		return $this->bag[ $index ];
 	}
 
 	public function toArray()

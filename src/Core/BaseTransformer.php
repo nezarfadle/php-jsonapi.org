@@ -1,4 +1,4 @@
-<?php namespace JsonApi;
+<?php namespace JsonApi\Core;
 
 use JsonApi\Utils\Url,
 	JsonApi\Utils\ArrayUtil,
@@ -14,16 +14,13 @@ abstract class BaseTransformer
 
 	abstract public function getId();
 	abstract public function getType();
-	abstract public function toRaw();	
 	abstract public function getAttributes();
-	
 	
 	public function __construct( $baseUrl )
 	{
 		$this->baseUrl = $baseUrl;	
 	}
 	
-
 	protected function hasSparseFieldsets()
 	{
 		return isset( $this->sparseFieldsets[ $this->getType() ] );
@@ -48,8 +45,10 @@ abstract class BaseTransformer
 
 		return $this->getAttributes();
 	}
-
+	
 	public function getMeta(){}
+	public function getRelation(){ return []; }
+	public function getExtra(){ return []; }
 
 	public function getBaseUrl()
 	{
@@ -77,20 +76,10 @@ abstract class BaseTransformer
 		return $this;
 	}
 
-	public function getRelation()
-	{
-		return [];	
-	}
-
-	public function getExtra()
-	{
-		return [];
-	}
-
 	public function getRelationships()
 	{
 
-		$relations = new RelationshipCollection( $this->getRelation() );
+		$relations = new RelationshipCollection( [ $this->getRelation() ] );
 		$data = [];
 		
 		$relations->each( function( $key, $relation ) use( &$data ) {
@@ -146,31 +135,16 @@ abstract class BaseTransformer
 	
 		$bag = new Bag();		
 
-		$relations = new RelationshipCollection( $this->getRelation() );
+		$relations = new RelationshipCollection( [ $this->getRelation(), $this->getExtra() ] );
 		$relations->each( function( $entityName, $relation ) use( &$bag, $fieldsToBeIncluded ) {
 			
-			if( $fieldsToBeIncluded->has( $entityName ))
-			{
+			if( $fieldsToBeIncluded->has( $entityName )) {
 				$result = new Result( $relation->toResource( $this->sparseFieldsets ) );
-				if( $result->hasContent() )
-				{
-					// $bag->add( $relation->toResource( $this->sparseFieldsets ));
+				if( $result->hasContent() ) {
 					$bag->add( $result->getContent() );
 				}
 			}
 
-		});
-		
-		$extraRelations = new RelationshipCollection( $this->getExtra() );
-		$extraRelations->each( function( $entityName, $relation ) use( &$bag, $fieldsToBeIncluded ) {
-			if( $fieldsToBeIncluded->has( $entityName ))
-			{
-				$result = new Result( $relation->toResource( $this->sparseFieldsets ) );
-				if( $result->hasContent() )
-				{
-					$bag->add( $result->getContent() );
-				}
-			}
 		});
 		
 		return $bag->toArray();

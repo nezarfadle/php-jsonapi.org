@@ -1,8 +1,8 @@
 <?php  namespace App;
 
-use JsonApi\BaseTransformer,
-	JsonApi\Relationship,
-	JsonApi\Bag
+use JsonApi\Core\BaseTransformer,
+	JsonApi\Core\Relationship,
+	JsonApi\Core\Bag
 ;
 
 class ArticleTransformer extends BaseTransformer

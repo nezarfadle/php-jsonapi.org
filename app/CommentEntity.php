@@ -1,7 +1,7 @@
 <?php  namespace App;
 
-use JsonApi\BaseTransformer,
-	JsonApi\Attributes
+use JsonApi\Core\BaseTransformer,
+	JsonApi\Core\Attributes
 
 ;
 
