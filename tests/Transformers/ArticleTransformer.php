@@ -7,7 +7,7 @@ class ArticleTransformer extends BaseTransformer
 
 	public function __construct()
 	{
-		parent::__construct('');
+		parent::__construct('http://fake.com');
 	}
 	
 	public function getId()

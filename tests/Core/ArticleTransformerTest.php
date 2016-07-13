@@ -19,6 +19,13 @@ class ArticleTransformerTest extends \PHPUnit_Framework_TestCase
 		$this->assertArrayHasKey( 'type', $identifier );
 	}
 
+	public function test_transformer_shouldHaveAttributes()
+	{
+		$identifier = $this->uow->getAttributes();
+		$this->assertArrayHasKey( '', $identifier );
+		$this->assertArrayHasKey( '', $identifier );
+	}
+
 
 
 
