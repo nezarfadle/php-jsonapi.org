@@ -84,13 +84,13 @@ abstract class BaseTransformer
 		
 		$relations->each( function( $key, $relation ) use( &$data ) {
 			
-			$resolver = $relation->createResolver();			
+			$transformer = $relation->createTransformer();
 			$data[ $key ] = [
 				'links' => [
-					'self' => Url::build( [ $this->getBaseUrl(), $this->getType(), $this->getId(), 'relationships', $resolver->getType() ]),
-					'related' => Url::build( [ $this->getBaseUrl(), $this->getType(), $this->getId(), $resolver->getType () ] )
+					'self' => Url::build( [ $this->getBaseUrl(), $this->getType(), $this->getId(), 'relationships', $transformer->getType() ]),
+					'related' => Url::build( [ $this->getBaseUrl(), $this->getType(), $this->getId(), $transformer->getType () ] )
 				],
-				'data' => $resolver->toIdentifier()
+				'data' => $transformer->toIdentifier()
 			];
 
 		});

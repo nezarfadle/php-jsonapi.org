@@ -12,19 +12,29 @@ class ArticleTransformerTest extends \PHPUnit_Framework_TestCase
 		$this->uow = new ArticleTransformer();
 	}
 
-	public function test_transformer_shouldHaveIdentifier()
+	public function test_ShouldBeTransformedToResourceIdentifier()
 	{
 		$identifier = $this->uow->toIdentifier();
+
 		$this->assertArrayHasKey( 'id', $identifier );
+		$this->assertEquals( '123ABC', $identifier['id'] );
+
 		$this->assertArrayHasKey( 'type', $identifier );
+		$this->assertEquals( 'articles', $identifier['type'] );
 	}
 
-	public function test_transformer_shouldHaveAttributes()
+	public function test_ShouldBeTransformedToResourceObject()
 	{
-		$identifier = $this->uow->getAttributes();
-		$this->assertArrayHasKey( '', $identifier );
-		$this->assertArrayHasKey( '', $identifier );
+		$resource = $this->uow->toResource();
+		$this->assertArrayHasKey( 'id', $resource );
+		$this->assertArrayHasKey( 'type', $resource );
+		$this->assertArrayHasKey( 'attributes', $resource );
+		$this->assertArrayHasKey( 'links', $resource );
+		$this->assertArrayHasKey( 'meta', $resource );
+		$this->assertArrayHasKey( 'relationships', $resource );
+
 	}
+
 
 
 

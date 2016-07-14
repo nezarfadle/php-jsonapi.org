@@ -33,5 +33,9 @@ class AuthorEntity extends BaseTransformer
 		return $attributes->get();
 	}
 
+	public function toRaw()
+	{
+		return $this->author;
+	}
 
 }

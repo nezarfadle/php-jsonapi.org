@@ -24,7 +24,8 @@ class ArrayUtil
 
 	public static function isEmpty( $array )
 	{
-		if( !is_array( $array ) || count( $array ) == 0 ) {
+		// if( !is_array( $array ) || 0 === count( $array )) {
+		if( is_array( $array ) && 0 === count( $array )) {
 			return true;
 		}
 

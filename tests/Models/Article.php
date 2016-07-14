@@ -1,4 +1,4 @@
-<?php namespace App;
+<?php namespace Test\Models;
 
 class Article
 {
@@ -6,17 +6,14 @@ class Article
 	public $id, $title, $body, $author, $comments = [] ;
 	private $commentsAuthors = [];
 
-	public function __construct( $id, $title, $body )
+	public function __construct( $id, $title, $body, $author )
 	{
 		$this->id = $id;
 		$this->title = $title;
 		$this->body = $body;
-	}
-	
-	public function writtenBy($author)
-	{
 		$this->author = $author;
 	}
+	
 
 	public function has($comment)
 	{
@@ -24,10 +21,6 @@ class Article
 		$this->commentsAuthors[] = $comment->author;
 	}
 
-	public function getComments()
-	{
-		return $this->comments;
-	}
 
 	public function getCommentsAuthors()
 	{
